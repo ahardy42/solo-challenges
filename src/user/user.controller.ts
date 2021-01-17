@@ -2,7 +2,7 @@ import { Controller, Get, Res, HttpStatus, Param, NotFoundException, Post, Body,
 import { UserService } from './user.service';
 import { ValidateObjectId } from './shared/pipes/validateObjectId.pipes';
 
-@Controller('users')
+@Controller('api/users')
 export class UserController {
     constructor(private userService: UserService) { }
 

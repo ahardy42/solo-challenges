@@ -1,15 +1,22 @@
-import { Controller, Get, HttpStatus, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Next, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './auth/jwtAuth.guard';
-import { Request, Response } from 'express';
+import { Response, Request, NextFunction } from 'express';
+import { join } from 'path';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/')
-  async getHello(@Query('token') token:string, @Res() res: Response): Promise<any> {
-    return res.status(HttpStatus.OK).json({token})
+  @Get('*')
+  root(@Res() res: Response, @Req() req:Request, @Next() next:NextFunction): void {
+    
+    // here you can check if the requested path is your api endpoint, if that's the case then we have to return next()
+    if (req.path.includes('api') || req.path.includes('auth')) {
+      return next();
+    }
+    
+    // change the path to the correct html page path in your project
+    res.sendFile(join(__dirname, '..', 'client/build/index.html'));
   }
 
 }
