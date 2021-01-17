@@ -18,6 +18,10 @@ export class UserService {
         return this.userModel.findById(id).exec()
     }
 
+    async findByStravaId(id): Promise<UserDocument> {
+        return this.userModel.findOne({stravaId: id}).exec();
+    }
+
     async create(user): Promise<UserDocument> {
         const newUser = await this.userModel.create(user);
         return newUser.save()
